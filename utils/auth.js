@@ -1,7 +1,9 @@
 const withAuth = (req, res, next) => {
-    if (req.session.userID) {
-        next();
+    if (!req.session.user_id) {
+      res.redirect('/login');
     } else {
-        res.status(401).json({ message: 'Unauthorized' });
+      next();
     }
-};
+  };
+  
+  module.exports = withAuth;
