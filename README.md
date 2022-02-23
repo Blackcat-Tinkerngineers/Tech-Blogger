@@ -14,16 +14,16 @@
 
   ## About the Project
 
-<p>Model-View-Controller application built with capability to create username, password and blog styled content</p>
-</br>
-
-<P>Deployed URL</p>
-<a href= "https://tech-blogrrr.herokuapp.com/">https://tech-blogrrr.herokuapp.com/</a>
+<p> Application built as a CMS-styled blog allowing users personalized content or 
+viewing other users' posts. Users are also able to signup or log in whenever visiting the site. 
+Thanks for visiting, and please enjoy. </p>
 
 
+## DEMO & Deployed URL: 
+<!--<a href= "https://tech-blogrrr.herokuapp.com/">https://tech-blogrrr.herokuapp.com/</a>-->
 
 
-  
+
 <div align="center"></div>
 
 
