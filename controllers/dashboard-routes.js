@@ -17,16 +17,12 @@ router.get('/', withAuth, (req, res) => {
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'user_id', 'post_id', 'created_at', 'post_id', 'comment_text'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['id', 'username', 'email']
           }
         },
-        {
-          model: User,
-          attributes: ['username', 'twitter', 'github']
-        }
       ]
     })
       .then(dbPostData => {
@@ -53,16 +49,12 @@ router.get('/', withAuth, (req, res) => {
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'user_id', 'post_id', 'created_at', 'post_id', 'comment_text'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['id', 'username', 'email']
           }
         },
-        {
-          model: User,
-          attributes: ['username', 'twitter', 'github']
-        }
       ]
     })
       .then(dbPostData => {
@@ -82,42 +74,5 @@ const post = dbPostData.get({ plain: true });
         res.status(500).json(err);
       });
 });
-
-router.get('/create/', withAuth, (req, res) => {
-    Post.findAll({
-      where: {
-        user_id: req.session.user_id
-      },
-      attributes: [
-        'id',
-        'title',
-        'created_at',
-        'post_content'
-      ],
-      include: [
-        {
-          model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-          include: {
-            model: User,
-            attributes: ['username', 'twitter', 'github']
-          }
-        },
-        {
-          model: User,
-          attributes: ['username', 'twitter', 'github']
-        }
-      ]
-    })
-      .then(dbPostData => {
-        const posts = dbPostData.map(post => post.get({ plain: true }));
-        res.render('create-post', { posts, loggedIn: true });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  });
-
 
 module.exports = router;

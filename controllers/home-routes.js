@@ -4,7 +4,6 @@ const { Post, User, Comment } = require('../models');
 
 router.get('/', (req, res) => {
     console.log(req.session);
-    
     Post.findAll({
       attributes: [
         'id',
@@ -15,16 +14,12 @@ router.get('/', (req, res) => {
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'user_id', 'post_id', 'created_at', 'post_id', 'comment_text'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['id', 'username', 'email']
           }
         },
-        {
-          model: User,
-          attributes: ['username', 'twitter', 'github']
-        }
       ]
     })
       .then(dbPostData => {
@@ -72,16 +67,12 @@ router.get('/login', (req, res) => {
       include: [
         {
           model: Comment,
-          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          attributes: ['id', 'user_id', 'post_id', 'created_at', 'post_id', 'comment_text'],
           include: {
             model: User,
-            attributes: ['username', 'twitter', 'github']
+            attributes: ['id', 'username', 'email']
           }
         },
-        {
-          model: User,
-          attributes: ['username', 'twitter', 'github']
-        }
       ]
     })
       .then(dbPostData => {
