@@ -1,23 +1,84 @@
 const router = require('express').Router();
-const res = require('express/lib/response');
-const { Post, Comment, User } = require('../../models');
+const sequelize = require('../../config/connection');
+const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-
-router.get('/', withAuth, (req, res) => {
+router.get('/', (req, res) => {
+    console.log('======================');
     Post.findAll({
+        attributes: [
+            'id',
+            'title',
+            'post_content',
+            'user_id',
+            'created_at'
+            [sequelize.literals.now(), 'created_at'],
+        ],
+        include: [
+            {
+                model: Comment,
+                attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+                include: {
+                    model: User,
+                    attributes: ['username']
+                }
+            },
+        ]
+    })
+        .then(dbPostData => res.json(dbPostData))
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
 
-
-
-
-router.post('/', withAuth, (req, res) => {
-    const body = req.body;
-    console.log(req.session.userID);
-    Post.create({ ...body, userId: req.session.userID })
-        .then(newPost => {
-            res.json(newPost);
+router.get('/:id', (req, res) => {
+    Post.findOne({
+        where: {
+            id: req.params.id
+        },
+        attributes: [
+            'id',
+            'title',
+            'post_content',
+            'user_id',
+            'created_at'
+            [sequelize.literals.now(), 'created_at'],
+        ],
+        include: [
+            {
+                model: Comment,
+                attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+                include: {
+                    model: User,
+                    attributes: ['username']
+                }
+            },
+        ]
+    })
+        .then(dbPostData => {
+            if (!dbPostData) {
+                res.status(404).json({ message: 'No post found with this id' });
+                return;
+            }
+            res.json(dbPostData);
         })
         .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
+
+router.post('/', (req, res) => {
+    Post.create({
+        title: req.body.title,
+        post_content: req.body.post_content,
+        user_id: req.body.user_id,
+        created_at: req.body.created_at
+    })
+        .then(dbPostData => res.json(dbPostData))
+        .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 });
@@ -28,32 +89,36 @@ router.put('/:id', withAuth, (req, res) => {
             id: req.params.id
         }
     })
-        .then(affectedRows => {
-            if (affectedRows > 0) {
-                res.status(200).end();
-            } else {
-                res.status(400).end();
+        .then(dbPostData => {
+            if (!dbPostData) {
+                res.status(404).json({ message: 'No post found with this id' });
+                return;
             }
+            res.json(dbPostData);
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 });
 
+
 router.delete('/:id', withAuth, (req, res) => {
+    console.log('id', req.params.id);
     Post.destroy({
         where: {
             id: req.params.id
         }
     })
-        .then(affectedRows => {
-            if (affectedRows > 0) {
-                res.status(200).end();
-            } else {
-                res.status(400).end();
+        .then(dbPostData => {
+            if (!dbPostData) {
+                res.status(404).json({ message: 'No post found with this id' });
+                return;
             }
+            res.json(dbPostData);
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 });
