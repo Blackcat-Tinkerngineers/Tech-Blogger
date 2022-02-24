@@ -5,8 +5,9 @@ var path = require("path");
 
 var helpers = require("./utils/helpers");
 
-var exphbs = require("express-handlebars");
-var hbs = exphbs.create({ helpers });
+
+var handlebars = require('express3-handlebars')
+.create({ helpers });
 
 var session = require("express-session");
 
