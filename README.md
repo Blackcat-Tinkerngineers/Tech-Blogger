@@ -22,6 +22,9 @@ Thanks for visiting, and please enjoy. </p>
 ## DEMO & Deployed URL: 
 <!--<a href= "https://tech-blogrrr.herokuapp.com/">https://tech-blogrrr.herokuapp.com/</a>-->
 
+![Screenshot 2022-02-23 002833](https://user-images.githubusercontent.com/88634637/155306626-ec6a072c-3b3b-4e14-806c-8d560ebf2617.png)
+
+
 
 
 <div align="center"></div>
